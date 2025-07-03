@@ -1,8 +1,12 @@
 "use client";
 
 import Image from "next/image";
+import axios from "axios";
 import Card from "@/components/Card";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useUser } from "./userContext";
+import { Property } from "@/app/types";
+import Login from "@/components/LoginModal";
 
 const metadata = [{
   title: "Dream Home Real Estate",
@@ -27,24 +31,41 @@ const metadata = [{
 ];
 
 export default function Home() {
+  const user = useUser();
+  const [properties, setProperties] = useState<Property[]>([]);
+
   useEffect(() => {
-    fetch("http://localhost:3000/api/oracleConnection")
-      .then((response) => {
-        console.log(response);
-      });
-    }, []);
+    const fetchProperties = async () => {
+      const response = await axios.get("http://localhost:3000/api/oracleConnection?table=property");
+      console.log("Properties fetched:", response.data.properties);
+      setProperties(response.data.properties);
+    };
+    fetchProperties();
+  }, []);
 
 
   return (
     <>
-      <h1>hi</h1>
-      <div className="justify-items-center grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {metadata.map((house, index) => (
-          <Card title={house.title}
-            description={house.description}
-            imageUrl={house.imageUrl} />
-        ))}
+      <div className="justify-items-center grid grid-cols-1 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+        {properties &&
+          properties.map((property, index) => (
+            <Card key={property.propertyNo} title={`${property.street}, ${property.city}, ${property.postalCode}`}
+              description={`${property.type} - ${property.rooms} rooms, $${property.rent} rent`}
+              imageUrl="/house.jpg" />
+          ))}
       </div>
+
+      {user.isAuthenticated ? (
+        <>
+          <div className="text-center">{user.user.name} Is authenticated</div>
+        </>
+      ) : (
+        <>
+          <>Not Authenticated</>
+
+        </>
+      )}
+
     </>
   );
 }
