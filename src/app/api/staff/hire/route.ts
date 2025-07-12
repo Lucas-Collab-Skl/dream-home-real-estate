@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     // Uncomment out if you want to create the first user in your db.
     // and change the information
-    
+
     /*let firstName = "Lucas";
     let lastName = "Vandermaarel";
     let position = "CEO";
@@ -23,7 +23,9 @@ export async function POST(req: NextRequest) {
     let mobile = "2269808454";
     let email = "lukevdm64@gmail.com";
     let username = "Lochis";
-    let password = "pass123";*/
+    let password = "pass123";
+    let createUser = true;
+    */
 
     // YES, I know this is not secure, this is for a project and to not pass around environment variable files.
     const password_hash = crypto.createHash('sha256').update(password + 'scoobydoobydooSalt').digest('hex');
