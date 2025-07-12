@@ -26,3 +26,10 @@ export type Staff = {
     mobile: string;
     email: string;
 }
+
+export type Branch = {
+    branchNo: string;
+    street: string,
+    city: string,
+    postCode: string;
+}

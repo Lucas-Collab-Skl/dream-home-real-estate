@@ -15,7 +15,6 @@ import Image from "next/image";
 import { useState } from "react";
 import { useUser } from "@/app/userContext";
 import { useDisclosure } from "@heroui/react";
-import axios from "axios";
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -26,7 +25,11 @@ export default function Header() {
         user.setIsAuthenticated(false);
         user.setUser(null);
         onLoginClose();
-        window.location.href="/";
+
+        // delete user from localStorage
+        localStorage.removeItem('user');
+        localStorage.removeItem('isAuthenticated');
+        window.location.href = "/";
     };
 
     return (
@@ -45,7 +48,7 @@ export default function Header() {
                 {user.isAuthenticated && (
                     <NavbarContent className="hidden sm:flex gap-4" justify="center">
                         <NavbarItem>
-                            <Link color="foreground" href="#">
+                            <Link color="foreground" href="/staff">
                                 Staff
                             </Link>
                         </NavbarItem>
@@ -74,12 +77,12 @@ export default function Header() {
                 </NavbarContent>
                 <NavbarMenu>
 
-                   
+
 
                     {user.isAuthenticated && (
                         <>
                             <NavbarItem>
-                                <Link color="foreground" href="#">
+                                <Link color="foreground" href="/staff">
                                     Staff
                                 </Link>
                             </NavbarItem>
@@ -95,8 +98,8 @@ export default function Header() {
                             </NavbarItem>
                         </>
                     )}
-                    <br/>
-                     <NavbarItem className="flex justify-end">
+                    <br />
+                    <NavbarItem className="flex justify-end">
                         {user.isAuthenticated ? (
                             <Button color="secondary" variant="faded" onPress={logout}>Logout</Button>
                         ) : (
