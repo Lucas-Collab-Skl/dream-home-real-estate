@@ -4,10 +4,15 @@ import crypto from "crypto";
 import oracledb from "oracledb";
 
 export async function POST(req: NextRequest) {
+    // comment this out below if you want to create the first user in your db.
     const { firstName, lastName, position, DOB, salary, branchNo, telephone, mobile, email, username, password, createUser } = await req.json();
-   // const response = await req.json();
+   
+    // const response = await req.json();
     //console.log(response);
-    // for initial creation of Lucas's account.
+
+    // Uncomment out if you want to create the first user in your db.
+    // and change the information
+    
     /*let firstName = "Lucas";
     let lastName = "Vandermaarel";
     let position = "CEO";

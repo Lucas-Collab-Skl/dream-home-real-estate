@@ -41,7 +41,7 @@ export default function Header() {
                         className="sm:hidden"
                     />
                     <NavbarBrand as="a" href="/">
-                        <Image className="mr-2" src="/house.jpg" alt="Logo" width={40} height={40} />
+                        <Image className="mr-2" src="/Logo_4_Trustworthy.png" alt="Logo" width={40} height={40} />
                         <p className="text-xl text-secondary text-inherit">Dream House</p>
                     </NavbarBrand>
                 </NavbarContent>

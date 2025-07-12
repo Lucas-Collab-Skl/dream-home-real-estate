@@ -6,7 +6,6 @@ import Card from "@/components/Card";
 import { useEffect, useState } from "react";
 import { useUser } from "./userContext";
 import { Property } from "@/app/types";
-import Login from "@/components/LoginModal";
 
 const metadata = [{
   title: "Dream Home Real Estate",
