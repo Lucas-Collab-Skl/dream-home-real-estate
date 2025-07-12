@@ -15,6 +15,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useUser } from "@/app/userContext";
 import { useDisclosure } from "@heroui/react";
+import axios from "axios";
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,6 +26,7 @@ export default function Header() {
         user.setIsAuthenticated(false);
         user.setUser(null);
         onLoginClose();
+        window.location.href="/";
     };
 
     return (
