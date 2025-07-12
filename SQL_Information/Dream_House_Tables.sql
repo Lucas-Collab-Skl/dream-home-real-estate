@@ -7,8 +7,10 @@ CREATE TABLE DH_UserAccount (
     username VARCHAR2(50) UNIQUE NOT NULL,
     password VARCHAR2(100) NOT NULL, -- hashed password
     role VARCHAR2(20) NOT NULL CHECK (role IN ('client', 'staff', 'owner', 'admin')),
-    email VARCHAR2(100) UNIQUE,
-    status VARCHAR2(20) DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'suspended'))
+    --email VARCHAR2(100) UNIQUE, -- removing email since it is in DH_Staff
+    status VARCHAR2(20) DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'suspended')),
+    staffNo VARCHAR2(10),
+    CONSTRAINT fk_user_staff FOREIGN KEY (staffNo) REFERENCES DH_Staff(staffNo)
 );
 
 COMMIT;

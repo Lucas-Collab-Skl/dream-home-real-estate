@@ -12,3 +12,17 @@ export type Property = {
     picture: string;
     floorplan: string;
 }
+
+export type Staff = {
+    staffNo: string;
+    firstName: string;
+    lastName: string;
+    position: string;
+    sex: string;
+    DOB: Date;
+    salary: number;
+    branchNo: string;
+    telephone: string;
+    mobile: string;
+    email: string;
+}

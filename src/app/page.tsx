@@ -36,9 +36,9 @@ export default function Home() {
 
   useEffect(() => {
     const fetchProperties = async () => {
-      const response = await axios.get("http://localhost:3000/api/oracleConnection?table=property");
-      console.log("Properties fetched:", response.data.properties);
-      setProperties(response.data.properties);
+      const response = await axios.get("http://localhost:3000/api/list?table=property");
+      console.log("Properties fetched:", response.data.tableList);
+      setProperties(response.data.tableList);
     };
     fetchProperties();
   }, []);
@@ -57,7 +57,7 @@ export default function Home() {
 
       {user.isAuthenticated ? (
         <>
-          <div className="text-center">{user.user.name} Is authenticated</div>
+          <div className="text-center">{user.user?.firstName} Is authenticated</div>
         </>
       ) : (
         <>

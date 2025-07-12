@@ -1,8 +1,9 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
+import { Staff } from './types';
 
 interface UserContextType {
-    user: any;
-    setUser: (user: any) => void;
+    user: Staff | null;
+    setUser: (user: Staff | null) => void;
     isAuthenticated: boolean;
     setIsAuthenticated: (isAuthenticated: boolean) => void;
 }
