@@ -14,3 +14,11 @@ CREATE SEQUENCE userid_seq
   MINVALUE 0
   NOCACHE
   NOCYCLE;
+
+-- use with clientno in DH_Client
+CREATE SEQUENCE clientno_seq
+  START WITH 0
+  INCREMENT BY 1
+  MINVALUE 0
+  NOCACHE
+  NOCYCLE;

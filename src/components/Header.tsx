@@ -41,7 +41,7 @@ export default function Header() {
                         className="sm:hidden"
                     />
                     <NavbarBrand as="a" href="/">
-                        <Image className="mr-2" src="/Logo_4_Trustworthy.png" alt="Logo" width={40} height={40} />
+                        <Image className="mr-2 rounded-lg" src="/cropped_logo.png" alt="Logo" width={80} height={80} />
                         <p className="text-xl text-secondary text-inherit">Dream House</p>
                     </NavbarBrand>
                 </NavbarContent>
@@ -53,12 +53,12 @@ export default function Header() {
                             </Link>
                         </NavbarItem>
                         <NavbarItem>
-                            <Link color="foreground" href="#">
+                            <Link color="foreground" href="/branch">
                                 Branches
                             </Link>
                         </NavbarItem>
                         <NavbarItem>
-                            <Link color="foreground" href="#">
+                            <Link color="foreground" href="/client">
                                 Clients
                             </Link>
                         </NavbarItem>

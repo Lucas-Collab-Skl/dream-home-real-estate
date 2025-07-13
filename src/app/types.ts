@@ -33,3 +33,17 @@ export type Branch = {
     city: string,
     postCode: string;
 }
+
+export type Client = {
+    clientNo: string;
+    firstName: string;
+    lastName: string;
+    telephone: string;
+    street: string;
+    city: string;
+    email: string;
+    preferredType: string;
+    maxRent: number;
+}
+
+export const PropertyTypes = ["Flat", "House", "Condo", "Townhouse", "Duplex"];

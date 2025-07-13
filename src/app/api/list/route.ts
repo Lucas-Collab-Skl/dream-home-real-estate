@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Branch, Property, Staff } from "@/app/types";
+import { Branch, Property, Staff, Client } from "@/app/types";
 import dbConn from "../lib/oracledb";
 
 export async function GET(req: NextRequest) {
@@ -70,6 +70,19 @@ export async function GET(req: NextRequest) {
                     postCode: row[3] as string
                 };
                 return branch;
+            } else if (table == "client") {
+                const client: Client = {
+                    clientNo: row[0] as string,
+                    firstName: row[1] as string,
+                    lastName: row[2] as string,
+                    telephone: row[3] as string,
+                    street: row[4] as string,
+                    city: row[5] as string,
+                    email: row[6] as string,
+                    preferredType: row[7] as string,
+                    maxRent: row[8] as number
+                };
+                return client;
             }
 
             return row;

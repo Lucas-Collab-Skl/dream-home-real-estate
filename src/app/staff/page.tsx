@@ -199,7 +199,7 @@ export default function StaffPage() {
             <Modal isOpen={isOpen} onOpenChange={onClose} size="3xl" className="mx-auto mt-10">
                 <ModalContent>
                     <ModalHeader className="flex flex-col">
-                        <h2 className="text-2xl font-bold text-center">{selectedStaff ? 'Edit Staff' : 'Hire Staff'}</h2>
+                        <h2 className="text-2xl font-bold text-center">{selectedStaff?.staffNo != "" ? 'Edit Staff' : 'Hire Staff'}</h2>
                     </ModalHeader>
                     <ModalBody>
                         {selectedStaff && (
