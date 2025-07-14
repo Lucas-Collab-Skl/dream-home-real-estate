@@ -85,3 +85,83 @@ export async function POST(req: NextRequest) {
     }
 
 }
+
+export async function PUT(req: NextRequest) {
+    const { staffNo, salary, telephone, mobile, email} = await req.json();
+
+    const cleanSalary = salary.toString().replace(/,/g, '');
+    const salaryNum = parseFloat(cleanSalary);
+
+    try {
+        // create connection to the db
+        const connection = await dbConn();
+
+        // UPDATE staff
+         const updateStaff = await connection.execute(
+            `UPDATE DH_STAFF SET 
+            salary = :salary, 
+            telephone = :telephone, 
+            mobile = :mobile, 
+            email = :email 
+            WHERE staffno = :staffNo`,
+            {
+                salary: salaryNum,
+                telephone: telephone,
+                mobile: mobile,
+                email: email,
+                staffNo: staffNo
+            },
+            {
+                autoCommit: true // Automatically commit the transaction
+            }
+        );
+
+        // close the connection
+        await connection.close();
+
+        return NextResponse.json({ message: `Staff member (${staffNo}) was successfully edited.`}, { status: 200 });
+    } catch (err: any) {
+        console.error("Error connecting to Oracle Database:", err);
+        return NextResponse.json({ error: err.message }, { status: 500 });
+    }
+
+}
+
+export async function DELETE(req: NextRequest) {
+    const { staffNo } = await req.json();
+
+    try {
+        // create connection to the db
+        const connection = await dbConn();
+
+
+        // Delete from DH_UserAccount first since it has a foreign key constraint
+        await connection.execute(`DELETE FROM DH_USERACCOUNT WHERE staffno = :staffNo`,
+            {
+                staffNo: staffNo
+            },
+            {
+                autoCommit: true // Automatically commit the transaction
+            }
+        );
+
+        // Delete from DH_STAFF
+        await connection.execute(
+            `DELETE FROM DH_STAFF WHERE staffno = :staffNo`,
+            {
+                staffNo: staffNo
+            },
+            {
+                autoCommit: true
+            }
+        );
+
+        // close the connection
+        await connection.close();
+
+        return NextResponse.json({ message: `Staff member (${staffNo}) was successfully deleted.`}, { status: 200 });
+    } catch (err: any) {
+        console.error("Error connecting to Oracle Database:", err);
+        return NextResponse.json({ error: err.message }, { status: 500 });
+    }
+}

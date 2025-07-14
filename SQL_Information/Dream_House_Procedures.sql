@@ -122,7 +122,7 @@ END;
 -------- Task 2-2  - Allow end user to change BRANCH ADDRESS   ---------------------
 --- Create Stored Procedure in Oracle
 
-CCREATE OR REPLACE PROCEDURE update_branch_address (
+CREATE OR REPLACE PROCEDURE update_branch_address (
     p_branchno        IN DH_Branch.Branchno%TYPE,
     p_new_street      IN DH_Branch.street%TYPE,
     p_new_city        IN DH_Branch.city%TYPE,
@@ -218,6 +218,30 @@ END;
 /
 
 
+
+
+-- Create Client Stored Procedure
+create or replace PROCEDURE CLIENT_CREATE_SP 
+(
+  c_firstname IN VARCHAR2,
+  c_lastname IN VARCHAR2,
+  c_telephone IN VARCHAR2,
+  c_street IN VARCHAR2,
+  c_city IN VARCHAR2,
+  c_email IN VARCHAR2,
+  c_preferredType IN VARCHAR2,
+  c_maxRent IN NUMBER,
+  out_clientNo OUT VARCHAR2
+) AS 
+BEGIN
+
+  INSERT INTO DH_CLIENT(clientno, fname, lname, telno, street, city, email, preftype, maxrent) 
+  VALUES(clientno_seq.NEXTVAL, c_firstname, c_lastname, c_telephone, c_street, c_city, c_email, c_preferredType, c_maxRent)
+  RETURNING clientno INTO out_clientNo;
+  
+  COMMIT;
+  
+END CLIENT_CREATE_SP;
 
 
 

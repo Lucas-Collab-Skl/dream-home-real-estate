@@ -46,4 +46,4 @@ export type Client = {
     maxRent: number;
 }
 
-export const PropertyTypes = ["Flat", "House", "Condo", "Townhouse", "Duplex"];
+export const PropertyTypes = ["Flat", "House", "Condo"];

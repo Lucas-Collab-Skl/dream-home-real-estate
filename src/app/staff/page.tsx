@@ -2,6 +2,7 @@
 import { Button } from "@heroui/button";
 import { TableBody, Table, TableHeader, TableCell, TableRow, TableColumn, Tooltip, Modal, ModalContent, ModalHeader, ModalBody, select, addToast, Input, NumberInput, Checkbox } from "@heroui/react";
 import { Select, SelectSection, SelectItem } from "@heroui/select";
+import {HiOutlineTrash, HiOutlinePencil, HiOutlinePencilAlt} from "react-icons/hi";
 import { useDisclosure } from "@heroui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -15,6 +16,7 @@ export default function StaffPage() {
     const [selectedBranch, setSelectedBranch] = useState("");
     const [branches, setBranches] = useState<Branch[]>([]);
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
 
 
     const branchSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -70,7 +72,7 @@ export default function StaffPage() {
 
         if (isHired) {
             // edit
-            const res = await axios.post("http://localhost:3000/api/staff/edit", {
+            const res = await axios.put("http://localhost:3000/api/staff", {
                 staffNo: staffNo,
                 firstName: firstName,
                 lastName: lastName,
@@ -85,19 +87,19 @@ export default function StaffPage() {
             if (res.status == 200) {
                 addToast({
                     title: "Success",
-                    description: `${firstName} ${lastName} has been edited successfully`,
+                    description: res.data.message,
                     color: "success"
                 });
             } else {
                 addToast({
                     title: "Error",
-                    description: "Staff member couldn't be edited",
+                    description: res.data.error,
                     color: "danger"
                 });
             }
         } else {
             // hire
-            const res = await axios.post("http://localhost:3000/api/staff/hire", {
+            const res = await axios.post("http://localhost:3000/api/staff", {
                 staffNo: staffNo,
                 firstName: firstName,
                 lastName: lastName,
@@ -135,6 +137,32 @@ export default function StaffPage() {
 
         onClose();
     }
+    
+    const onDelete = async () => {
+        if (selectedStaff) {
+            const res = await axios.delete("http://localhost:3000/api/staff", {
+                data: { staffNo: selectedStaff.staffNo }
+            });
+
+            if (res.status == 200) {
+                addToast({
+                    title: "Success",
+                    description: res.data.message,
+                    color: "success"
+                });
+            } else {
+                addToast({
+                    title: "Error",
+                    description: res.data.error,
+                    color: "danger"
+                });
+            }
+
+            // get staff list again
+            await fetchStaff();
+        }
+        onDeleteClose();
+    }
 
     const newHireStaff: Staff = {
         staffNo: "",
@@ -167,7 +195,7 @@ export default function StaffPage() {
                     <TableColumn>Telephone</TableColumn>
                     <TableColumn>Mobile</TableColumn>
                     <TableColumn>Email</TableColumn>
-                    <TableColumn>Action</TableColumn>
+                    <TableColumn className="text-center">Action</TableColumn>
                 </TableHeader>
                 <TableBody>
                     {staff && staff.map((row) => (
@@ -183,12 +211,19 @@ export default function StaffPage() {
                             <TableCell>{row.telephone}</TableCell>
                             <TableCell>{row.mobile}</TableCell>
                             <TableCell>{row.email}</TableCell>
-                            <TableCell>
-                                <Tooltip content="Edit user">
-                                    <Button onPress={() => { fetchBranches(); setSelectedStaff(row); onOpen(); }} isIconOnly variant="ghost" className="text-slate-700 cursor-pointer active:opacity-50">
-                                        <EditIcon className="size-7" />
+                            <TableCell className="text-center">
+                                
+                                <Tooltip content="Edit">
+                                    <Button variant="light" color="secondary" onPress={() => { fetchBranches(); setSelectedStaff(row); onOpen(); }} isIconOnly className="text-slate-700 cursor-pointer active:opacity-50">
+                                        <HiOutlinePencilAlt className="size-7 text-secondary" />
                                     </Button>
                                 </Tooltip>
+                                <Tooltip content="Delete">
+                                    <Button variant="light" color="danger" onPress={() => { setSelectedStaff(row); onDeleteOpen(); }} isIconOnly className="text-slate-700 cursor-pointer active:opacity-50">
+                                        <HiOutlineTrash className="size-7 text-danger" />
+                                    </Button>
+                                </Tooltip>
+                               
                             </TableCell>
                         </TableRow>
 
@@ -257,6 +292,22 @@ export default function StaffPage() {
 
                             </form>
                         )}
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+
+
+            <Modal isOpen={isDeleteOpen} onOpenChange={onDeleteClose} size="3xl" className="mx-auto mt-10">
+                <ModalContent>
+                    <ModalHeader className="flex flex-col">
+                        <h2 className="text-2xl font-bold text-center">Delete Staff</h2>
+                    </ModalHeader>
+                    <ModalBody>
+                        <p className="text-center">Are you sure you want to delete staff member {selectedStaff?.firstName} {selectedStaff?.lastName}?</p>
+                        <div className="flex justify-center mt-4">
+                            <Button color="danger" variant="flat" className="w-32 mr-2" onPress={onDelete}>Yes, I'm sure</Button>
+                            <Button color="secondary" variant="flat" className="w-32" onPress={onDeleteClose}>Cancel</Button>
+                        </div>
                     </ModalBody>
                 </ModalContent>
             </Modal>
