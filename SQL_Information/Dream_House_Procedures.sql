@@ -74,6 +74,7 @@ END AUTH_USER_SP;
 
 
 -------- Task 2-1    Get Branch Address    ---------------------
+
 CREATE OR REPLACE FUNCTION GET_BRANCH_ADDRESS (
     p_branchno IN DH_Branch.Branchno%TYPE
 ) RETURN VARCHAR2 IS
@@ -179,6 +180,7 @@ EXECUTE update_branch_address('B004', '37 Raven Street', 'London', 'NW10 6RE');
 
 -------- Task 2-3  - Allow end user to change BRANCH ADDRESS   ---------------------
 -- Create or replace the stored procedure
+
 CREATE OR REPLACE PROCEDURE NEW_BRANCH (
     p_branchno   IN DH_Branch.Branchno%TYPE,
     p_street     IN DH_Branch.street%TYPE,
@@ -186,6 +188,8 @@ CREATE OR REPLACE PROCEDURE NEW_BRANCH (
     p_postcode   IN DH_Branch.postcode%TYPE
 )
 IS
+    -- Scalar variables are not explicitly needed if directly using parameters in the INSERT statement,
+    -- but they could be declared here if intermediate processing was required.
 BEGIN
     -- Insert new branch details into the DH_Branch table
     INSERT INTO DH_Branch (Branchno, street, city, postcode)
@@ -193,6 +197,7 @@ BEGIN
 
     -- Make the changes permanent in the database
     COMMIT; -- This ensures the insert is saved permanently
+    COMMIT; -- This ensures the insert is saved permanently [Your Query]
 
     -- Provide feedback (requires SET SERVEROUTPUT ON)
     DBMS_OUTPUT.PUT_LINE('New Branch ' || p_branchno || ' added successfully.');
@@ -239,8 +244,6 @@ BEGIN
   COMMIT;
   
 END CLIENT_CREATE_SP;
-
-
 
 -------- Task 3.2 – Create a web Form to update client   ---------------------
 CREATE OR REPLACE PROCEDURE update_client_info (
