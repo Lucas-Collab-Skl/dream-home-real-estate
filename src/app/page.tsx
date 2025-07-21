@@ -13,7 +13,7 @@ export default function Home() {
 
   useEffect(() => {
     const fetchProperties = async () => {
-      const response = await axios.get("http://localhost:3000/api/list?table=property");
+      const response = await axios.get("/api/list?table=property");
       console.log("Properties fetched:", response.data.tableList);
       setProperties(response.data.tableList);
     };

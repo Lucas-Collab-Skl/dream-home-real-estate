@@ -20,7 +20,7 @@ export default function BranchPage() {
 
     const fetchBranches = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/api/list?table=branch");
+            const response = await axios.get("/api/list?table=branch");
             console.log("Branches fetched", response.data.tableList);
             setBranches(response.data.tableList);
         } catch (error) {
@@ -45,7 +45,7 @@ export default function BranchPage() {
 
             if (isCreated) {
                 // edit
-                const res = await axios.put("http://localhost:3000/api/branch", {
+                const res = await axios.put("/api/branch", {
                     branchNo: branchNo,
                     street: formData.get('street') as string,
                     city: formData.get('city') as string,
@@ -66,7 +66,7 @@ export default function BranchPage() {
                 }
             } else {
                 // create
-                const res = await axios.post("http://localhost:3000/api/branch", {
+                const res = await axios.post("/api/branch", {
                     branchNo: branchNo,
                     street: formData.get('street') as string,
                     city: formData.get('city') as string,
@@ -105,7 +105,7 @@ export default function BranchPage() {
 
     const onDelete = async () => {
         if (selectedBranch) {
-            const res = await axios.delete("http://localhost:3000/api/branch", {
+            const res = await axios.delete("/api/branch", {
                 data: { branchNo: selectedBranch.branchNo }
             });
 
@@ -133,7 +133,7 @@ export default function BranchPage() {
         setSelectedBranchNo(e.target.value);
 
         try {
-            const res = await axios.get(`http://localhost:3000/api/branch?branchNo=${e.target.value}`);
+            const res = await axios.get(`/api/branch?branchNo=${e.target.value}`);
             if (res.status == 200) {
                 setSelectedBranchAddress(res.data.branchAddress);
             }

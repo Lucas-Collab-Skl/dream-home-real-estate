@@ -23,7 +23,7 @@ export default function ClientPage() {
 
     const fetchClients = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/api/list?table=client");
+            const response = await axios.get("/api/list?table=client");
             console.log("Staff fetched:", response.data.tableList);
             setClients(response.data.tableList);
         } catch (error) {
@@ -58,7 +58,7 @@ export default function ClientPage() {
 
         if (isCreated) {
             // edit client
-            const res = await axios.put("http://localhost:3000/api/client/", {
+            const res = await axios.put("/api/client/", {
                 clientNo: clientNo,
                 firstName: firstName,
                 lastName: lastName,
@@ -84,7 +84,7 @@ export default function ClientPage() {
             }
         } else {
             // add client
-            const res = await axios.post("http://localhost:3000/api/client/", {
+            const res = await axios.post("/api/client/", {
                 clientNo: clientNo,
                 firstName: firstName,
                 lastName: lastName,
@@ -121,7 +121,7 @@ export default function ClientPage() {
 
     const onDelete = async () => {
         if (selectedClient) {
-            const res = await axios.delete("http://localhost:3000/api/client", {
+            const res = await axios.delete("/api/client", {
                 data: { clientNo: selectedClient.clientNo }
             });
 

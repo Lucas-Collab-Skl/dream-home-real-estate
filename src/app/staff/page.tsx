@@ -25,7 +25,7 @@ export default function StaffPage() {
 
     const fetchStaff = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/api/list?table=staff");
+            const response = await axios.get("/api/list?table=staff");
             console.log("Staff fetched:", response.data.tableList);
             setStaff(response.data.tableList);
         } catch (error) {
@@ -35,7 +35,7 @@ export default function StaffPage() {
 
     const fetchBranches = async () => {
         try {
-            const response = await axios.get("http://localhost:3000/api/list?table=branch");
+            const response = await axios.get("/api/list?table=branch");
             console.log("Branches fetched", response.data.tableList);
             setBranches(response.data.tableList);
         } catch (error) {
@@ -72,7 +72,7 @@ export default function StaffPage() {
 
         if (isHired) {
             // edit
-            const res = await axios.put("http://localhost:3000/api/staff", {
+            const res = await axios.put("/api/staff", {
                 staffNo: staffNo,
                 firstName: firstName,
                 lastName: lastName,
@@ -99,7 +99,7 @@ export default function StaffPage() {
             }
         } else {
             // hire
-            const res = await axios.post("http://localhost:3000/api/staff", {
+            const res = await axios.post("/api/staff", {
                 staffNo: staffNo,
                 firstName: firstName,
                 lastName: lastName,
@@ -140,7 +140,7 @@ export default function StaffPage() {
     
     const onDelete = async () => {
         if (selectedStaff) {
-            const res = await axios.delete("http://localhost:3000/api/staff", {
+            const res = await axios.delete("/api/staff", {
                 data: { staffNo: selectedStaff.staffNo }
             });
 
