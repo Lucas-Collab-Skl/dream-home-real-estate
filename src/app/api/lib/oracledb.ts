@@ -1,14 +1,19 @@
 const oracledb = require('oracledb');
 const path = require('path');
 const fs = require('fs');
+const os = require('os');
 
 export default async function dbConn() {
     try {
         // Check if wallet files exist
         
             console.log('Using wallet-based connection with Thin mode...');
-            
-            const tempWalletPath = path.join('/tmp', 'wallet');
+
+            const tempWalletPath = path.join(os.tmpdir(), 'wallet');
+
+            if (!fs.existsSync(tempWalletPath)) {
+                fs.mkdirSync(tempWalletPath, { recursive: true });
+            }
 
             const walletFiles = {
                 'tnsnames.ora': process.env.WALLET_TNSNAMES_ORA,
@@ -16,7 +21,8 @@ export default async function dbConn() {
                 'cwallet.sso': process.env.WALLET_CWALLET_SSO,
                 'ewallet.p12': process.env.WALLET_EWALLET_P12,
                 'keystore.jks': process.env.WALLET_KEYSTORE_JKS,
-                'truststore.jks': process.env.WALLET_TRUSTSTORE_JKS
+                'truststore.jks': process.env.WALLET_TRUSTSTORE_JKS,
+                'ewallet.pem': process.env.WALLET_EWALLET_PEM,
             };
 
             Object.entries(walletFiles).forEach(([filename, base64Content]) => {
