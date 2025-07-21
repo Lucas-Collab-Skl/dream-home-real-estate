@@ -22,7 +22,7 @@ export default function LoginModal({ isOpen, onOpen, onClose }: LoginProps) {
 
     const handleAuth = async (username: string, password: string) => {
 
-        const authResponse = await axios.post("http://localhost:3000/api/auth", { username, password });
+        const authResponse = await axios.post("/api/auth", { username, password });
 
         if (authResponse.status == 200) {
             console.log("Authentication response:", authResponse.data.profile);
