@@ -5,69 +5,83 @@ import { useEffect } from 'react';
 interface UserContextType {
     user: Staff | null;
     setUser: (user: Staff | null) => void;
-    isAuthenticated: boolean;
-    setIsAuthenticated: (isAuthenticated: boolean) => void;
+    updateUser: (updates: Partial<Staff>) => void;
+    logout: () => void;
+    isLoading: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
 
-export const UserProvider = ({ children }: { children: ReactNode }) => {
-    const [user, setUser] = useState<any>(null);
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+export function UserProvider({ children }: { children: ReactNode }) {
+    const [user, setUser] = useState<Staff | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
-    // on mount, check localStorage for user and auth status
+    // Load user from localStorage on mount
     useEffect(() => {
-        const savedUser = localStorage.getItem('user');
-        const savedAuth = localStorage.getItem('isAuthenticated');
+        const loadUser = () => {
+            try {
+                const savedUser = localStorage.getItem('user');
+                if (savedUser) {
+                    const userData = JSON.parse(savedUser);
+                    // Convert DOB string back to Date if needed
+                    if (userData.DOB) {
+                        userData.DOB = new Date(userData.DOB);
+                    }
+                    setUser(userData);
+                }
+            } catch (error) {
+                console.error('Error loading user from localStorage:', error);
+                localStorage.removeItem('user'); // Clear corrupted data
+            } finally {
+                setIsLoading(false);
+            }
+        };
 
-        if (savedUser && savedAuth === 'true') {
-            setUser(JSON.parse(savedUser));
-            setIsAuthenticated(true);
-        }
-        setIsLoading(false);
+        loadUser();
     }, []);
 
-    // Save to localStorage whenever user or auth state changes
-  useEffect(() => {
-    if (!isLoading) {
-      if (user && isAuthenticated) {
-        localStorage.setItem('user', JSON.stringify(user));
-        localStorage.setItem('isAuthenticated', 'true');
-      } else {
+    // Save user to localStorage whenever user state changes
+    useEffect(() => {
+        if (user) {
+            localStorage.setItem('user', JSON.stringify(user));
+        } else {
+            localStorage.removeItem('user');
+        }
+    }, [user]);
+
+    // Helper function to update specific user properties
+    const updateUser = (updates: Partial<Staff>) => {
+        if (user) {
+            const updatedUser = { ...user, ...updates };
+            setUser(updatedUser);
+        }
+    };
+
+    // Logout function
+    const logout = () => {
+        setUser(null);
         localStorage.removeItem('user');
-        localStorage.removeItem('isAuthenticated');
-      }
-    }
-  }, [user, isAuthenticated, isLoading]);
+    };
 
-  const handleSetUser = (newUser: Staff | null) => {
-    setUser(newUser);
-  };
-
-  const handleSetIsAuthenticated = (authenticated: boolean) => {
-    setIsAuthenticated(authenticated);
-    if (!authenticated) {
-      setUser(null);
-    }
-  };
+    const value = {
+        user,
+        setUser,
+        updateUser,
+        logout,
+        isLoading
+    };
 
     return (
-        <UserContext.Provider value={{
-            user,
-            isAuthenticated,
-            setUser: handleSetUser,
-            setIsAuthenticated: handleSetIsAuthenticated
-        }}>
+        <UserContext.Provider value={value}>
             {children}
         </UserContext.Provider>
     );
-};
+}
 
-export const useUser = () => {
+export function useUser() {
     const context = useContext(UserContext);
     if (context === undefined) {
         throw new Error('useUser must be used within a UserProvider');
     }
     return context;
-};
+}

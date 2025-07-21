@@ -9,6 +9,7 @@ import {
 } from "@heroui/navbar";
 
 import { Button } from "@heroui/button";
+import { Avatar, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
 import { Link } from "@heroui/link";
 import LoginModal from "@/components/LoginModal";
 import Image from "next/image";
@@ -19,16 +20,14 @@ import { useDisclosure } from "@heroui/react";
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { isOpen: isLoginOpen, onOpen: onLoginOpen, onClose: onLoginClose } = useDisclosure();
-    const user = useUser();
+    const {user, setUser} = useUser();
 
     const logout = () => {
-        user.setIsAuthenticated(false);
-        user.setUser(null);
+        setUser(null);
         onLoginClose();
 
         // delete user from localStorage
         localStorage.removeItem('user');
-        localStorage.removeItem('isAuthenticated');
         window.location.href = "/";
     };
 
@@ -40,12 +39,14 @@ export default function Header() {
                         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
                         className="sm:hidden"
                     />
-                    <NavbarBrand as="a" href="/">
-                        <Image className="mr-2 rounded-lg" src="/cropped_logo.png" alt="Logo" width={80} height={80} />
-                        <p className="text-xl text-secondary text-inherit">Dream House</p>
+                    <NavbarBrand>
+                        <a href="/" className="flex items-center">
+                            <Image className="mr-2 rounded-lg" src="/cropped_logo.png" alt="Logo" width={80} height={80} />
+                            <p className="text-xl text-secondary text-inherit">Dream House</p>
+                        </a>
                     </NavbarBrand>
                 </NavbarContent>
-                {user.isAuthenticated && (
+                {user && (
                     <NavbarContent className="hidden sm:flex gap-4" justify="center">
                         <NavbarItem>
                             <Link color="foreground" href="/staff">
@@ -65,12 +66,33 @@ export default function Header() {
                     </NavbarContent>
                 )}
                 <NavbarContent justify="end">
-                    <NavbarItem className="hidden md:flex">
-                        {user.isAuthenticated ? (
-                            <Button color="secondary" variant="faded" onPress={logout}>Logout</Button>
-                        ) : (
-                            <Button color="secondary" variant="faded" onPress={onLoginOpen}>Login</Button>
-                        )}
+                    <NavbarItem className="hidden md:flex items-center gap-2">
+                        <Dropdown>
+                            <DropdownTrigger>
+                                <Avatar
+                                    src={user ? user?.photo : "/default-avatar.png"}
+                                    name={user ? user?.firstName : "Guest"}
+                                    className="cursor-pointer"
+                                    size="md"
+                                />
+                            </DropdownTrigger>
+                            <DropdownMenu>
+                                {user ? (
+                                    <>
+                                        <DropdownItem key="profile">
+                                            <Link href="/profile">Profile</Link>
+                                        </DropdownItem>
+                                        <DropdownItem key="logout" onPress={logout}>
+                                            Logout
+                                        </DropdownItem>
+                                    </>
+                                ) : (
+                                    <DropdownItem key="login" onPress={onLoginOpen}>
+                                        Login
+                                    </DropdownItem>
+                                )}
+                            </DropdownMenu>
+                        </Dropdown>
 
                     </NavbarItem>
 
@@ -79,7 +101,7 @@ export default function Header() {
 
 
 
-                    {user.isAuthenticated && (
+                    {user && (
                         <>
                             <NavbarItem>
                                 <Link color="foreground" href="/staff">
@@ -100,7 +122,7 @@ export default function Header() {
                     )}
                     <br />
                     <NavbarItem className="flex justify-end">
-                        {user.isAuthenticated ? (
+                        {user ? (
                             <Button color="secondary" variant="faded" onPress={logout}>Logout</Button>
                         ) : (
                             <Button color="secondary" variant="faded" onPress={onLoginOpen}>Login</Button>

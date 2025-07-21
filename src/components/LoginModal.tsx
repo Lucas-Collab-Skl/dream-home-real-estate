@@ -10,7 +10,7 @@ interface LoginProps {
 }
 
 export default function LoginModal({ isOpen, onOpen, onClose }: LoginProps) {
-    const user = useUser();
+    const { setUser } = useUser();
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -27,8 +27,7 @@ export default function LoginModal({ isOpen, onOpen, onClose }: LoginProps) {
         if (authResponse.status == 200) {
             console.log("Authentication response:", authResponse.data.profile);
 
-            user.setIsAuthenticated(true);
-            user.setUser(authResponse.data.profile);
+            setUser(authResponse.data.profile);
 
             onClose();
         } else {

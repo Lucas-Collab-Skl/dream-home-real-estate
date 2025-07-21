@@ -25,6 +25,7 @@ export type Staff = {
     telephone: string;
     mobile: string;
     email: string;
+    photo?: string;
 }
 
 export type Branch = {

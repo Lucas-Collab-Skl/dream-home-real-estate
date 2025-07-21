@@ -7,30 +7,8 @@ import { useEffect, useState } from "react";
 import { useUser } from "./userContext";
 import { Property } from "@/app/types";
 
-const metadata = [{
-  title: "Dream Home Real Estate",
-  description: "Find your dream home with us!",
-  imageUrl: "/house.jpg"
-},
-{
-  title: "Dream Home Real Estate",
-  description: "Find your dream home with us!",
-  imageUrl: "/house.jpg"
-},
-{
-  title: "Dream Home Real Estate",
-  description: "Find your dream home with us!",
-  imageUrl: "/house.jpg"
-},
-{
-  title: "Dream Home Real Estate",
-  description: "Find your dream home with us!",
-  imageUrl: "/house.jpg"
-},
-];
-
 export default function Home() {
-  const user = useUser();
+ 
   const [properties, setProperties] = useState<Property[]>([]);
 
   useEffect(() => {
@@ -53,18 +31,6 @@ export default function Home() {
               imageUrl="/house.jpg" />
           ))}
       </div>
-
-      {user.isAuthenticated ? (
-        <>
-          <div className="text-center">{user.user?.firstName} Is authenticated</div>
-        </>
-      ) : (
-        <>
-          <>Not Authenticated</>
-
-        </>
-      )}
-
     </>
   );
 }

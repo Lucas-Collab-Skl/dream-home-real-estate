@@ -160,7 +160,7 @@ export default function ClientPage() {
     return (
         <main className="flex flex-col items-center min-h-screen">
             <h1 className="text-2xl font-bold mb-4">Client Management</h1>
-            <Button color="secondary" variant="flat" className="w-32 mb-5" onPress={() => { setSelectedClient(newHireClient); onOpen(); }}>Add Clients</Button>
+            <Button color="secondary" variant="flat" className="w-32 mb-5" onPress={() => { setSelectedClient(newHireClient); onOpen(); }}>Add Client</Button>
             <Table isStriped className="w-full px-2 lg:px-10">
                 <TableHeader>
                     <TableColumn>Client No</TableColumn>
