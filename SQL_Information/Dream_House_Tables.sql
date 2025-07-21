@@ -9,7 +9,7 @@ CREATE TABLE DH_UserAccount (
     role VARCHAR2(20) NOT NULL CHECK (role IN ('client', 'staff', 'owner', 'admin')),
     --email VARCHAR2(100) UNIQUE, -- removing email since it is in DH_Staff
     status VARCHAR2(20) DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'suspended')),
-    staffNo VARCHAR2(10),
+    staffNo VARCHAR2(50),
     CONSTRAINT fk_user_staff FOREIGN KEY (staffNo) REFERENCES DH_Staff(staffNo)
 );
 

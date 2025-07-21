@@ -74,7 +74,8 @@ END AUTH_USER_SP;
 
 
 -------- Task 2-1    Get Branch Address    ---------------------
-CREATE OR REPLACE FUNCTION get_branch_address (
+
+CREATE OR REPLACE FUNCTION GET_BRANCH_ADDRESS (
     p_branchno IN DH_Branch.Branchno%TYPE
 ) RETURN VARCHAR2 IS
     v_full_address VARCHAR2(255);
@@ -91,7 +92,7 @@ EXCEPTION
         RETURN 'Branch Not Found';
     WHEN TOO_MANY_ROWS THEN
         RETURN 'Error: Multiple Branches Found';
-END get_branch_address;
+END GET_BRANCH_ADDRESS;
 /
 
 ----- Using Function get_branch_address hardcoded address branch 
@@ -122,7 +123,7 @@ END;
 -------- Task 2-2  - Allow end user to change BRANCH ADDRESS   ---------------------
 --- Create Stored Procedure in Oracle
 
-CCREATE OR REPLACE PROCEDURE update_branch_address (
+CREATE OR REPLACE PROCEDURE update_branch_address (
     p_branchno        IN DH_Branch.Branchno%TYPE,
     p_new_street      IN DH_Branch.street%TYPE,
     p_new_city        IN DH_Branch.city%TYPE,
@@ -179,7 +180,8 @@ EXECUTE update_branch_address('B004', '37 Raven Street', 'London', 'NW10 6RE');
 
 -------- Task 2-3  - Allow end user to change BRANCH ADDRESS   ---------------------
 -- Create or replace the stored procedure
-CREATE OR REPLACE PROCEDURE new_branch (
+
+CREATE OR REPLACE PROCEDURE NEW_BRANCH (
     p_branchno   IN DH_Branch.Branchno%TYPE,
     p_street     IN DH_Branch.street%TYPE,
     p_city       IN DH_Branch.city%TYPE,
@@ -194,20 +196,20 @@ BEGIN
     VALUES (p_branchno, p_street, p_city, p_postcode);
 
     -- Make the changes permanent in the database
+    COMMIT; -- This ensures the insert is saved permanently
     COMMIT; -- This ensures the insert is saved permanently [Your Query]
 
     -- Provide feedback (requires SET SERVEROUTPUT ON)
     DBMS_OUTPUT.PUT_LINE('New Branch ' || p_branchno || ' added successfully.');
 
 EXCEPTION
-    -- Basic exception handling
     WHEN DUP_VAL_ON_INDEX THEN
-        DBMS_OUTPUT.PUT_LINE('Error: Branch number ' || p_branchno || ' already exists.');
-        ROLLBACK; -- Rollback in case of duplicate entry
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20005, 'Branch ' || p_branchno || ' already exists (unique constraint violation)');
     WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('An unexpected error occurred: ' || SQLERRM);
-        ROLLBACK; -- Rollback any changes in case of other errors
-END new_branch;
+        ROLLBACK;
+        RAISE_APPLICATION_ERROR(-20999, 'Error creating branch: ' || SQLERRM);
+END NEW_BRANCH;
 /
 
 -- Test Add New Branch
@@ -220,6 +222,28 @@ END;
 
 
 
+-- Create Client Stored Procedure
+create or replace PROCEDURE CLIENT_CREATE_SP 
+(
+  c_firstname IN VARCHAR2,
+  c_lastname IN VARCHAR2,
+  c_telephone IN VARCHAR2,
+  c_street IN VARCHAR2,
+  c_city IN VARCHAR2,
+  c_email IN VARCHAR2,
+  c_preferredType IN VARCHAR2,
+  c_maxRent IN NUMBER,
+  out_clientNo OUT VARCHAR2
+) AS 
+BEGIN
+
+  INSERT INTO DH_CLIENT(clientno, fname, lname, telno, street, city, email, preftype, maxrent) 
+  VALUES(clientno_seq.NEXTVAL, c_firstname, c_lastname, c_telephone, c_street, c_city, c_email, c_preferredType, c_maxRent)
+  RETURNING clientno INTO out_clientNo;
+  
+  COMMIT;
+  
+END CLIENT_CREATE_SP;
 
 -------- Task 3.2 – Create a web Form to update client   ---------------------
 CREATE OR REPLACE PROCEDURE update_client_info (

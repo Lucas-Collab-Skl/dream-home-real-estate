@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Property } from "@/app/types";
+import { Branch, Property, Staff, Client } from "@/app/types";
 import dbConn from "../lib/oracledb";
 
 export async function GET(req: NextRequest) {
@@ -48,13 +48,13 @@ export async function GET(req: NextRequest) {
                 return property;
                 
             } else if (table === "staff") {
-                const staff = {
+                const staff: Staff = {
                     staffNo: row[0] as string,
                     firstName: row[1] as string,
                     lastName: row[2] as string,
                     position: row[3] as string,
                     sex: row[4] as string, 
-                    DOB: row[5] as string,
+                    DOB: row[5],
                     salary: row[6] as number,
                     branchNo: row[7] as string,
                     telephone: row[8] as string,
@@ -62,6 +62,27 @@ export async function GET(req: NextRequest) {
                     email: row[10] as string
                 };
                 return staff;
+            } else if (table == "branch") {
+                const branch: Branch = {
+                    branchNo: row[0] as string,
+                    street: row[1] as string,
+                    city: row[2] as string,
+                    postCode: row[3] as string
+                };
+                return branch;
+            } else if (table == "client") {
+                const client: Client = {
+                    clientNo: row[0] as string,
+                    firstName: row[1] as string,
+                    lastName: row[2] as string,
+                    telephone: row[3] as string,
+                    street: row[4] as string,
+                    city: row[5] as string,
+                    email: row[6] as string,
+                    preferredType: row[7] as string,
+                    maxRent: row[8] as number
+                };
+                return client;
             }
 
             return row;
