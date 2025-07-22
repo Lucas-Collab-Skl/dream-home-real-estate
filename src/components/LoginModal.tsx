@@ -1,7 +1,7 @@
 import { useUser } from "@/app/userContext";
 import axios from "axios";
 import { useEffect } from "react";
-import { Form, Input, Button, Modal, ModalContent, ModalBody, ModalHeader } from "@heroui/react";
+import { Form, Input, Button, Modal, ModalContent, ModalBody, ModalHeader, addToast } from "@heroui/react";
 
 interface LoginProps {
     isOpen: boolean;
@@ -22,17 +22,26 @@ export default function LoginModal({ isOpen, onOpen, onClose }: LoginProps) {
 
     const handleAuth = async (username: string, password: string) => {
 
+        try {
         const authResponse = await axios.post("/api/auth", { username, password });
-
-        if (authResponse.status == 200) {
             console.log("Authentication response:", authResponse.data.profile);
-
             setUser(authResponse.data.profile);
 
+            addToast({
+                title: "Login Successful",
+                description: `Welcome back ${authResponse.data.profile.firstName}!`,
+                color: "success"
+            });
+
             onClose();
-        } else {
-            console.error("Authentication failed:", authResponse.data.error);
-            alert("Invalid username or password");
+
+        } catch (error) {
+            console.error("Error during authentication:", error);
+            addToast({
+                title: "Login Failed",
+                description: "Invalid username or password",
+                color: "danger"
+            });
         }
     }
 
