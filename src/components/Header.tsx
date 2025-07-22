@@ -70,8 +70,8 @@ export default function Header() {
                         <Dropdown>
                             <DropdownTrigger>
                                 <Avatar
-                                    src={user ? user?.photo : "/default-avatar.png"}
-                                    name={user ? user?.firstName : "Guest"}
+                                    src={user?.photo}
+                                    name={user ? user?.firstName : "User"}
                                     className="cursor-pointer"
                                     size="md"
                                 />
@@ -103,18 +103,46 @@ export default function Header() {
 
                     {user && (
                         <>
+                        <NavbarItem>
+                             <Dropdown>
+                            <DropdownTrigger>
+                                <Avatar
+                                    src={user ? user?.photo : "/default-avatar.png"}
+                                    name={user ? user?.firstName : "Guest"}
+                                    className="cursor-pointer"
+                                    size="md"
+                                />
+                            </DropdownTrigger>
+                            <DropdownMenu>
+                                {user ? (
+                                    <>
+                                        <DropdownItem key="profile">
+                                            <Link href="/profile">Profile</Link>
+                                        </DropdownItem>
+                                        <DropdownItem key="logout" onPress={logout}>
+                                            Logout
+                                        </DropdownItem>
+                                    </>
+                                ) : (
+                                    <DropdownItem key="login" onPress={onLoginOpen}>
+                                        Login
+                                    </DropdownItem>
+                                )}
+                            </DropdownMenu>
+                        </Dropdown>
+                        </NavbarItem>
                             <NavbarItem>
                                 <Link color="foreground" href="/staff">
                                     Staff
                                 </Link>
                             </NavbarItem>
                             <NavbarItem>
-                                <Link color="foreground" href="#">
+                                <Link color="foreground" href="/branch">
                                     Branches
                                 </Link>
                             </NavbarItem>
                             <NavbarItem>
-                                <Link color="foreground" href="#">
+                                <Link color="foreground" href="/client">
                                     Clients
                                 </Link>
                             </NavbarItem>

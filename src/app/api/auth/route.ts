@@ -130,7 +130,7 @@ export async function POST(req: NextRequest) {
         });
 
         let photoDataUrl = null;
-         if (typeof authUser.outBinds.photo === 'object' && authUser.outBinds.photo.getData) {
+         if (typeof authUser.outBinds.photo === 'object' && authUser.outBinds.photo != null) {
                 photoDataUrl = await authUser.outBinds.photo.getData();
             }
 
