@@ -10,11 +10,11 @@ export default function Card({ title, description, imageUrl, }: {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <div className="flex flex-col max-w-sm rounded-lg border-1 min-h-80 overflow-hidden shadow-lg">
+      <div className="flex flex-col w-full rounded-lg border-1 min-h-80 overflow-hidden shadow-lg bg-cardBg">
         <img className="w-full h-48 object-cover" src={imageUrl} alt={title} />
         <div className="flex flex-col flex-1 p-4 gap-y-2">
-          <div className="font-bold mb-2">{title}</div>
-          <p className="text-gray-700 text-base flex-1">{description}</p>
+          <p className="font-bold mb-2">{title}</p>
+          <p className="text-foreground flex-1">{description}</p>
           <Button onPress={onOpen} className="w-full mt-auto" color="secondary">View Property</Button>
         </div>
       </div>

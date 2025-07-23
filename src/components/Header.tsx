@@ -16,11 +16,14 @@ import Image from "next/image";
 import { useState } from "react";
 import { useUser } from "@/app/userContext";
 import { useDisclosure } from "@heroui/react";
+import {useTheme} from "next-themes";
+import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi";
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { isOpen: isLoginOpen, onOpen: onLoginOpen, onClose: onLoginClose } = useDisclosure();
-    const {user, setUser} = useUser();
+    const { user, setUser } = useUser();
+     const { theme, setTheme } = useTheme()
 
     const logout = () => {
         setUser(null);
@@ -33,7 +36,7 @@ export default function Header() {
 
     return (
         <>
-            <Navbar onMenuOpenChange={setIsMenuOpen} className="backdrop-blur-md">
+            <Navbar onMenuOpenChange={setIsMenuOpen} className="backdrop-blur-md py-3 mb-2">
                 <NavbarContent>
                     <NavbarMenuToggle
                         aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -42,12 +45,12 @@ export default function Header() {
                     <NavbarBrand>
                         <a href="/" className="flex items-center">
                             <Image className="mr-2 rounded-lg" src="/cropped_logo.png" alt="Logo" width={80} height={80} />
-                            <p className="text-xl text-secondary text-inherit">Dream House</p>
+                            <p className="text-xl text-secondary-700">Dream House</p>
                         </a>
                     </NavbarBrand>
                 </NavbarContent>
                 {user && (
-                    <NavbarContent className="hidden sm:flex gap-4" justify="center">
+                    <NavbarContent className="hidden md:flex gap-8" justify="center">
                         <NavbarItem>
                             <Link color="foreground" href="/staff">
                                 Staff
@@ -66,6 +69,11 @@ export default function Header() {
                     </NavbarContent>
                 )}
                 <NavbarContent justify="end">
+                    <NavbarItem className="hidden md:flex items-center gap-2">
+                        <Button isIconOnly className="bg-transparent" onPress={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+                            {theme === 'light' ? <HiOutlineSun className="size-6"/> : <HiOutlineMoon className="size-6"/>}
+                        </Button>
+                    </NavbarItem>
                     <NavbarItem className="hidden md:flex items-center gap-2">
                         <Dropdown>
                             <DropdownTrigger>
@@ -100,37 +108,42 @@ export default function Header() {
                 <NavbarMenu>
 
 
-
+                    {/* Mobile Menu */}
                     {user && (
-                        <>
-                        <NavbarItem>
-                             <Dropdown>
-                            <DropdownTrigger>
-                                <Avatar
-                                    src={user ? user?.photo : "/default-avatar.png"}
-                                    name={user ? user?.firstName : "Guest"}
-                                    className="cursor-pointer"
-                                    size="md"
-                                />
-                            </DropdownTrigger>
-                            <DropdownMenu>
-                                {user ? (
-                                    <>
-                                        <DropdownItem key="profile">
-                                            <Link href="/profile">Profile</Link>
-                                        </DropdownItem>
-                                        <DropdownItem key="logout" onPress={logout}>
-                                            Logout
-                                        </DropdownItem>
-                                    </>
-                                ) : (
-                                    <DropdownItem key="login" onPress={onLoginOpen}>
-                                        Login
-                                    </DropdownItem>
-                                )}
-                            </DropdownMenu>
-                        </Dropdown>
+                        <div className="flex flex-col items-start gap-4 px-2 py-2">
+                        <NavbarItem className="mt-5">
+                            <Button isIconOnly className="bg-transparent" onPress={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
+                            {theme === 'light' ? <HiOutlineSun className="size-6"/> : <HiOutlineMoon className="size-6"/>}
+                        </Button>
                         </NavbarItem>
+                            <NavbarItem>
+                                <Dropdown>
+                                    <DropdownTrigger>
+                                        <Avatar
+                                            src={user ? user?.photo : "/default-avatar.png"}
+                                            name={user ? user?.firstName : "Guest"}
+                                            className="cursor-pointer"
+                                            size="md"
+                                        />
+                                    </DropdownTrigger>
+                                    <DropdownMenu>
+                                        {user ? (
+                                            <>
+                                                <DropdownItem key="profile">
+                                                    <Link href="/profile">Profile</Link>
+                                                </DropdownItem>
+                                                <DropdownItem key="logout" onPress={logout}>
+                                                    Logout
+                                                </DropdownItem>
+                                            </>
+                                        ) : (
+                                            <DropdownItem key="login" onPress={onLoginOpen}>
+                                                Login
+                                            </DropdownItem>
+                                        )}
+                                    </DropdownMenu>
+                                </Dropdown>
+                            </NavbarItem>
                             <NavbarItem>
                                 <Link color="foreground" href="/staff">
                                     Staff
@@ -146,17 +159,8 @@ export default function Header() {
                                     Clients
                                 </Link>
                             </NavbarItem>
-                        </>
+                        </div>
                     )}
-                    <br />
-                    <NavbarItem className="flex justify-end">
-                        {user ? (
-                            <Button color="secondary" variant="faded" onPress={logout}>Logout</Button>
-                        ) : (
-                            <Button color="secondary" variant="faded" onPress={onLoginOpen}>Login</Button>
-                        )}
-
-                    </NavbarItem>
                 </NavbarMenu>
             </Navbar >
             <LoginModal isOpen={isLoginOpen} onOpen={onLoginOpen} onClose={onLoginClose} />

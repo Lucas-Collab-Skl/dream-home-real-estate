@@ -22,8 +22,8 @@ export default function Home() {
 
 
   return (
-    <>
-      <div className="justify-items-center grid grid-cols-1 lg:grid-cols-4 gap-4 max-w-5xl mx-auto">
+    <div className="min-h-[100vh]">
+      <div className="justify-items-center grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-5xl mx-auto px-2 lg:px-0">
         {properties &&
           properties.map((property, index) => (
             <Card key={property.propertyNo} title={`${property.street}, ${property.city}, ${property.postalCode}`}
@@ -31,6 +31,6 @@ export default function Home() {
               imageUrl="/house.jpg" />
           ))}
       </div>
-    </>
+    </div>
   );
 }
