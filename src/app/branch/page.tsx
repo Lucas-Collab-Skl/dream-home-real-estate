@@ -40,6 +40,11 @@ export default function BranchPage() {
         const formData = new FormData(e.currentTarget);
         let branchNo = formData.get('branchNo') as string;
 
+        if (selectedBranch && selectedBranch.branchNo != "") {
+            branchNo = selectedBranch.branchNo;
+            isCreated = true;
+        }
+
         try {
 
 
