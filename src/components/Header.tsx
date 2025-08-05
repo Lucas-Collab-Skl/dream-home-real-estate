@@ -18,12 +18,13 @@ import { useUser } from "@/app/userContext";
 import { useDisclosure } from "@heroui/react";
 import {useTheme} from "next-themes";
 import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi";
+import { Staff } from "@/app/types";
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const { isOpen: isLoginOpen, onOpen: onLoginOpen, onClose: onLoginClose } = useDisclosure();
-    const { user, setUser } = useUser();
-     const { theme, setTheme } = useTheme()
+    const { theme, setTheme } = useTheme()
+    const [user, setUser] = useState<Staff | null>(null);
 
     const logout = () => {
         setUser(null);
