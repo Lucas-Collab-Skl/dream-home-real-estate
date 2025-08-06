@@ -1,3 +1,25 @@
+-- Tables 
+
+-- ALL DH_ tables from Centennial College --
+
+-- And then in addition:
+--  DH_UserAccount
+CREATE TABLE DH_UserAccount (
+    userID VARCHAR2(50) PRIMARY KEY,
+    username VARCHAR2(50) UNIQUE NOT NULL,
+    password VARCHAR2(100) NOT NULL, -- hashed password
+    role VARCHAR2(20) NOT NULL CHECK (role IN ('client', 'staff', 'owner', 'admin')),
+    status VARCHAR2(20) DEFAULT 'active' CHECK (status IN ('active', 'inactive', 'suspended')),
+    staffNo VARCHAR2(50),
+    photo CLOB,
+    CONSTRAINT fk_user_staff FOREIGN KEY (staffNo) REFERENCES DH_Staff(staffNo)
+);
+COMMIT;
+-- end of tables
+
+
+-- Procedures and functions
+
 -- To Authorize the user
 create or replace PROCEDURE AUTH_USER_SP (
     u_username IN VARCHAR2,
@@ -132,3 +154,38 @@ EXCEPTION
     WHEN TOO_MANY_ROWS THEN
         RETURN 'Error: Multiple Branches Found';
 END GET_BRANCH_ADDRESS;
+
+
+-- end of procedures and functions
+
+
+
+
+-- sequences
+
+-- use with userid in DH_UserAccount
+CREATE SEQUENCE userid_seq
+  START WITH 0
+  INCREMENT BY 1
+  MINVALUE 0
+  NOCACHE
+  NOCYCLE;
+
+-- use with staffno in DH_Staff
+  CREATE SEQUENCE staffno_seq
+  START WITH 0
+  INCREMENT BY 1
+  MINVALUE 0
+  NOCACHE
+  NOCYCLE;
+
+-- use with clientno in DH_Client
+CREATE SEQUENCE clientno_seq
+  START WITH 0
+  INCREMENT BY 1
+  MINVALUE 0
+  NOCACHE
+  NOCYCLE;
+
+
+  -- end of sequences

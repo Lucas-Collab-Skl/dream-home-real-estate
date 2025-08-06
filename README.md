@@ -14,7 +14,7 @@ Ayan Musse
 ## Getting Started
 
 In order to run the program, you will need a few tables created, some procedures, a function, and sequences.
-__These can all be found under SQL_USED.sql__
+__These can all be found under SQL_Information/SQL_USED.sql__
 
 Then you would need to create a `DH_BRANCH` record with sql as well as a `DH_STAFF` Record and `DH_USERACCOUNT` record.
 The staff and user account can be created by ... *Hard coding it in the staff route.* (src/app/api/staff/route.ts)
