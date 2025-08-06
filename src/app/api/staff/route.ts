@@ -13,16 +13,16 @@ export async function POST(req: NextRequest) {
     // Uncomment out if you want to create the first user in your db.
     // and change the information
 
-    /*let firstName = "Lucas";
-    let lastName = "Vandermaarel";
+    /*let firstName = "User";
+    let lastName = "LastName";
     let position = "CEO";
     let DOB = new Date("2000-02-03");
     let salary = 100000;
     let branchNo = "B002";
-    let telephone = "5192743163";
+    let telephone = "1234567890";
     let mobile = "2269808454";
-    let email = "lukevdm64@gmail.com";
-    let username = "Lochis";
+    let email = "hello@gmail.com";
+    let username = "user";
     let password = "pass123";
     let createUser = true;
     */

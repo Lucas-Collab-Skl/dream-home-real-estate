@@ -173,7 +173,6 @@ return (
             </Select>
             <Input isDisabled={true} label="Branch Address" labelPlacement="outside" type="text" name="branchNo" value={selectedBranchAddress} />
         </div>
-
         <Table isStriped className="w-full px-2 lg:px-10">
             <TableHeader>
                 <TableColumn>Branch No</TableColumn>
