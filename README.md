@@ -3,7 +3,7 @@ Lucas Vandermaarel
 Ayan Musse
 
 ## Hosted at
-[Dreamhome][https://dreamhome.vanderloch.com]
+[Dreamhome](https://dreamhome.vanderloch.com)
 
 
 ## Tech Stack
@@ -21,43 +21,46 @@ The staff and user account can be created by ... *Hard coding it in the staff ro
 
 You can uncomment out the code that is already there:
 ```ts
-    /*let firstName = "User";
-    let lastName = "LastName";
-    let position = "CEO";
-    let DOB = new Date("2000-02-03");
-    let salary = 100000;
-    let branchNo = "B002"; // change to the branchNo you creating in DH_BRANCH
-    let telephone = "1234567890";
-    let mobile = "2261234567";
-    let email = "hello@gmail.com";
-    let username = "user";
-    let password = "pass123";
-    let createUser = true;
-    */
+/*let firstName = "User";
+let lastName = "LastName";
+let position = "CEO";
+let DOB = new Date("2000-02-03");
+let salary = 100000;
+let branchNo = "B002"; // change to the branchNo you creating in DH_BRANCH
+let telephone = "1234567890";
+let mobile = "2261234567";
+let email = "hello@gmail.com";
+let username = "user";
+let password = "pass123";
+let createUser = true;
+*/
 ```
 
  and comment out the first line in the POST function:
- `const { firstName, lastName, position, DOB, salary, branchNo, telephone, mobile, email, username, password, createUser } = await req.json();`
+ ```
+ const { firstName, lastName, position, DOB, salary, branchNo, telephone, mobile, email, username, password, createUser } = await req.json();
+
+ ```
 
 ### Clone the project to your local machine.
 
 To run, you would need to create a .env file and put it into the root of your project first:
 
-```md
-#*The salt that you put onto your hashed passwords*
+```bash
+# The salt that you put onto your hashed passwords
 NEXT_PUBLIC_SALT
 
-#*You set this in Oracle Autonomous DB*
+# You set this in Oracle Autonomous DB
 WALLET_PASSWORD
 
-#*Database credentials. Refer to Oracle Autonomous DB connection documentation.*
+# Database credentials. Refer to Oracle Autonomous DB connection documentation.
 
 NEXT_PUBLIC_DB_USER
 NEXT_PUBLIC_DB_PASSWORD
 NEXT_PUBLIC_DB_CONNECTION_STRING
 NEXT_PUBLIC_DB_SERVICE_NAME
 
-#*Wallet files converted into base64. Gotten from Oracle Autonomous DB connection*
+# Wallet files converted into base64. Gotten from Oracle Autonomous DB connection
 
 WALLET_TNSNAMES_ORA
 WALLET_SQLNET_ORA
